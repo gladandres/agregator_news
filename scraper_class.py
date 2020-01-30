@@ -78,9 +78,14 @@ class Site_Scraper:
         url = 'https://lenta.ru'
         req = requests.get(url)
         soup = BeautifulSoup(req.content, 'lxml')
-        for entry in soup.find_all(class_='g-time'):
+        soup_news = soup.find(class_="span8 js-main__content")
+        for entry in soup_news.find_all(class_='g-time'):
             header = entry.next_sibling
-            link = url + entry.parent.get('href')
+            link_part = entry.parent.get('href')
+            if not link_part[0:4] == 'http':
+                link = url + link_part
+            else:
+                continue    
             soup_artc = BeautifulSoup(requests.get(link).content, 'lxml')
             articleBody = soup_artc.find(itemprop="articleBody")
             text_=''
