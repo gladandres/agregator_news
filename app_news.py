@@ -20,7 +20,7 @@ def get_news_all():
 @app.route('/news/<string:site>', methods=['GET'])
 def get_news_site(site):
     list_news = get_news(site)
-    if len(list_news)==0:
+    if not list_news:
        abort(404)
     return jsonify({'news': list_news})
 
